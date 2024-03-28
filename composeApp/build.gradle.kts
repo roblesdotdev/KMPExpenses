@@ -35,9 +35,15 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
+            implementation(compose.animation)
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
+
+            // Precompose
+            api(libs.precompose)
+            api(libs.precompose.viewmodel)
+
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
         }

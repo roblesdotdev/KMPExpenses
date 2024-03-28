@@ -29,23 +29,22 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import expenses.data.ExpenseManager
 import expenses.domain.model.Expense
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ExpensesScreen() {
+fun ExpensesScreen(uiState: ExpensesUIState) {
     Scaffold(containerColor = MaterialTheme.colorScheme.background) {
         LazyColumn(
             modifier = Modifier.padding(16.dp),
         ) {
             item {
-                ExpensesTotalHeader(total = 1222.33)
+                ExpensesTotalHeader(total = uiState.total)
             }
             stickyHeader {
                 AllExpensesHeader()
             }
-            items(ExpenseManager.fakeExpenses) { expense ->
+            items(uiState.expenses) { expense ->
                 ExpenseItem(expense, onExpenseClick = {})
             }
         }
