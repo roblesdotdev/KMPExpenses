@@ -1,11 +1,9 @@
 package navigation
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import expenses.data.ExpenseManager
 import expenses.domain.repo.ExpenseRepoImpl
 import expenses.presentation.ExpensesScreen
@@ -25,18 +23,22 @@ fun Navigation(modifier: Modifier = Modifier, navigator: Navigator) {
     NavHost(
         modifier = modifier,
         navigator = navigator,
-        initialRoute = "/home"
+        initialRoute = Destination.Home.route,
     ) {
-        scene("/home") {
+        scene(Destination.Home.route) {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             ExpensesScreen(uiState = uiState) { expense ->
-                navigator.navigate("/addExpenses/${expense.id}")
+                navigator.navigate(Destination.EditCreate.withArgs("${expense.id}"))
             }
         }
 
-        scene("/addExpenses/{id}") {backstackEntry ->
-            val idFromPath = backstackEntry.path<Long>("id")
-            Text( text = "Detail with id $idFromPath")
+        scene(Destination.EditCreate.route + "/{id}?") {backstackEntry ->
+            val idFromPath: Long? = backstackEntry.path<Long>("id")
+            if (idFromPath != null) {
+                Text( text = "Detail with id $idFromPath")
+            } else {
+                Text(text = "Create new expense")
+            }
         }
     }
 }
