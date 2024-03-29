@@ -1,5 +1,6 @@
 package expenses.presentation
 
+import expenses.domain.model.Expense
 import expenses.domain.repo.ExpenseRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,9 +21,31 @@ class ExpensesViewModel(private val repo: ExpenseRepo) : ViewModel() {
 
     private fun getAllExpenses() {
         viewModelScope.launch {
-            _uiState.update { state ->
-                state.copy(expenses = allExpenses, total = allExpenses.sumOf { it.amount })
-            }
+            updateState()
+        }
+    }
+
+    fun getExpenseById(id: Long): Expense? {
+        return allExpenses.firstOrNull { it.id == id }
+    }
+
+    fun addExpense(expense: Expense) {
+        viewModelScope.launch {
+            repo.addExpense(expense)
+            updateState()
+        }
+    }
+
+    fun editExpense(expense: Expense) {
+        viewModelScope.launch {
+            repo.editExpense(expense)
+            updateState()
+        }
+    }
+
+    private fun updateState() {
+        _uiState.update { state ->
+            state.copy(expenses = allExpenses, total = allExpenses.sumOf { it.amount })
         }
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import detail.presentation.ExpensesDetailScreen
 import expenses.data.ExpenseManager
 import expenses.domain.repo.ExpenseRepoImpl
 import expenses.presentation.ExpensesScreen
@@ -32,12 +33,16 @@ fun Navigation(modifier: Modifier = Modifier, navigator: Navigator) {
             }
         }
 
-        scene(Destination.EditCreate.route + "/{id}?") {backstackEntry ->
+        scene(Destination.EditCreate.route + "/{id}?") { backstackEntry ->
             val idFromPath: Long? = backstackEntry.path<Long>("id")
-            if (idFromPath != null) {
-                Text( text = "Detail with id $idFromPath")
-            } else {
-                Text(text = "Create new expense")
+            val expense = idFromPath?.let { id -> viewModel.getExpenseById(id) }
+            ExpensesDetailScreen(expense) { expenseToSave ->
+                if (expense == null) {
+                    viewModel.addExpense(expenseToSave)
+                } else {
+                    viewModel.editExpense(expenseToSave)
+                }
+                navigator.popBackStack()
             }
         }
     }
