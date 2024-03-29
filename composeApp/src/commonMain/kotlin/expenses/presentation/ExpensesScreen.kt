@@ -19,7 +19,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,20 +32,18 @@ import expenses.domain.model.Expense
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ExpensesScreen(uiState: ExpensesUIState) {
-    Scaffold(containerColor = MaterialTheme.colorScheme.background) {
-        LazyColumn(
-            modifier = Modifier.padding(16.dp),
-        ) {
-            item {
-                ExpensesTotalHeader(total = uiState.total)
-            }
-            stickyHeader {
-                AllExpensesHeader()
-            }
-            items(uiState.expenses) { expense ->
-                ExpenseItem(expense, onExpenseClick = {})
-            }
+fun ExpensesScreen(uiState: ExpensesUIState, onExpenseClick: (Expense) -> Unit) {
+    LazyColumn(
+        modifier = Modifier.padding(16.dp),
+    ) {
+        item {
+            ExpensesTotalHeader(total = uiState.total)
+        }
+        stickyHeader {
+            AllExpensesHeader()
+        }
+        items(uiState.expenses) { expense ->
+            ExpenseItem(expense, onExpenseClick = onExpenseClick)
         }
     }
 }

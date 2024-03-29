@@ -16,7 +16,7 @@ private fun ExpensesScreenLight() {
                 expenses = ExpenseManager.fakeExpenses,
                 total = 1222.33
             )
-        )
+        ) {}
     }
 }
 
@@ -29,7 +29,7 @@ private fun ExpensesScreenDark() {
                 expenses = ExpenseManager.fakeExpenses,
                 total = 1222.33
             )
-        )
+        ) {}
     }
 }
 
