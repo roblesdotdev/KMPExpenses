@@ -36,7 +36,7 @@ fun Navigation(modifier: Modifier = Modifier, navigator: Navigator) {
         scene(Destination.EditCreate.route + "/{id}?") { backstackEntry ->
             val idFromPath: Long? = backstackEntry.path<Long>("id")
             val expense = idFromPath?.let { id -> viewModel.getExpenseById(id) }
-            ExpensesDetailScreen(expense) { expenseToSave ->
+            ExpensesDetailScreen(expense = expense, categoryList = viewModel.getCategories()) { expenseToSave ->
                 if (expense == null) {
                     viewModel.addExpense(expenseToSave)
                 } else {

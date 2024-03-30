@@ -1,6 +1,7 @@
 package expenses.presentation
 
 import expenses.domain.model.Expense
+import expenses.domain.model.ExpenseCategory
 import expenses.domain.repo.ExpenseRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -41,6 +42,10 @@ class ExpensesViewModel(private val repo: ExpenseRepo) : ViewModel() {
             repo.editExpense(expense)
             updateState()
         }
+    }
+
+    fun getCategories(): List<ExpenseCategory> {
+        return repo.getCategories()
     }
 
     private fun updateState() {
